@@ -1,0 +1,24 @@
+version: 2.1
+orbs:
+  gcp-cli: circleci/gcp-cli@1.8.2
+jobs:
+  docker-build-push:
+    machine: true
+    steps:
+      - gcp-cli/install
+      - gcp-cli/initialize
+      - run: |
+          mkdir -p "$HOME/.docker"
+          gcloud auth configure-docker
+      - checkout
+      - run:
+          name: "Set up build tag"
+          command: |
+            echo 'export BUILD_TAG=`git rev-parse --short HEAD`' >> $BASH_ENV
+      - run: docker build . -t gcr.io/review-001-koyk-admin/services/grpc-web-005:${BUILD_TAG}
+      - run: docker push gcr.io/review-001-koyk-admin/services/grpc-web-005:${BUILD_TAG}
+workflows:
+  build-and-push:
+    jobs:
+      - docker-build-push:
+          context: verilycloud-poc-sa
