@@ -23,7 +23,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.formdata = this.fb.group({
-      grpcUrl: ['http://localhost:8181', []]
+      grpcUrl: ['http://localhost/backend', []]
     });
   }
 
