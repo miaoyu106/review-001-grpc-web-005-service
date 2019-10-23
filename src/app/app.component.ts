@@ -43,7 +43,8 @@ export class AppComponent {
     var client = new GreetingServiceClient(this.grpcUrl);
 
     client.greet(request, {}, (err, response) => {
-      console.log(response.getGreeting);
+      console.log(err);
+      console.log(response.getGreeting());
       this.greetingResponse = response.getGreeting();
     });
   }
